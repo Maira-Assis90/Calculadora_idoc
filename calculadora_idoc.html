@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de IDOC</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef3f8;
+      padding: 30px;
+    }
+
+    h2 {
+      background-color: #2e86c1;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .resultado {
+      color: #1b4f72; /* azul escuro */
+      font-weight: bold;
+    }
+
+    .input-area {
+      background-color: #fef9e7;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Calcular Indicador de IDOC - 0,40%</h2>
+
+  <table>
+    <tr>
+      <td class="input-area">Digite a quantidade de vendas (590):</td>
+      <td><input type="number" id="vendas" value="6862" oninput="calcularTudo()"></td>
+    </tr>
+    <tr>
+      <td class="input-area">Digite o número total de IDOC:</td>
+      <td><input type="number" id="idoc" value="28" oninput="calcularTudo()"></td>
+    </tr>
+    <tr>
+      <td>Esse é o valor cancelado:</td>
+      <td class="resultado" id="valorCancelado">0,00%</td>
+    </tr>
+    <tr>
+      <td>Máximo permitido:</td>
+      <td class="resultado">0,40%</td>
+    </tr>
+    <tr>
+      <td>Vendas Mínimas Necessárias:</td>
+      <td class="resultado" id="vendasMinimas">0</td>
+    </tr>
+    <tr>
+      <td>Quantidade de Vendas para Ficar Dentro do Indicador:</td>
+      <td class="resultado" id="diferencaVendas">0</td>
+    </tr>
+  </table>
+
+  <script>
+    function calcularTudo() {
+      const vendas = parseFloat(document.getElementById('vendas').value) || 0;
+      const idoc = parseFloat(document.getElementById('idoc').value) || 0;
+      const limitePermitido = 0.004; // 0,40% em formato decimal
+
+      // Valor cancelado
+      let valorCancelado = idoc / vendas;
+      let valorCanceladoPorcentagem = (valorCancelado * 100).toFixed(2) + "%";
+      document.getElementById('valorCancelado').innerText = valorCanceladoPorcentagem;
+
+      // Vendas Mínimas Necessárias
+      let vendasMinimas = Math.ceil((valorCancelado / limitePermitido) * vendas);
+      document.getElementById('vendasMinimas').innerText = vendasMinimas;
+
+      // Diferença de vendas
+      let diferenca = vendasMinimas - vendas;
+      document.getElementById('diferencaVendas').innerText = diferenca >= 0 ? diferenca : 0;
+    }
+
+    // Inicializa
+    calcularTudo();
+  </script>
+
+</body>
+</html>
